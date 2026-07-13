@@ -1,11 +1,6 @@
 #include "../include/board.h"
+#include "../include/side.h"
 #include <stdio.h>
-
-enum
-{
-    WHITE,
-    BLACK
-};
 
 void update_occupancies(Board *board)
 {
@@ -28,15 +23,7 @@ void update_occupancies(Board *board)
     board->all_occ =
           board->white_occ
         | board->black_occ;
-        
-    printf("White occupancy:\n");
-    print_bitboard(board->white_occ);
 
-    printf("Black occupancy:\n");
-    print_bitboard(board->black_occ);
-
-    printf("All occupancy:\n");
-    print_bitboard(board->all_occ);
 }
 
 void init_start_position(Board *board)

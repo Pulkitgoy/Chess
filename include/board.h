@@ -27,6 +27,7 @@ typedef struct
 
 } Board;
 
+void update_occupancies(Board *board);
 void init_start_position(Board *board);
 void print_board(Board *board);
 
