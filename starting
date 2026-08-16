@@ -1,0 +1,1 @@
+gcc -Wall -O2 -Iinclude src/*.c -o chess.exe -lws2_32 -lpthread

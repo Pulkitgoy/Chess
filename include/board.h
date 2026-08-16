@@ -3,6 +3,12 @@
 
 #include "bitboard.h"
 
+/* Castling rights bitmask */
+#define CASTLE_WK  (1 << 0)   /* White kingside  */
+#define CASTLE_WQ  (1 << 1)   /* White queenside */
+#define CASTLE_BK  (1 << 2)   /* Black kingside  */
+#define CASTLE_BQ  (1 << 3)   /* Black queenside */
+
 typedef struct
 {
     U64 white_pawns;
@@ -18,12 +24,14 @@ typedef struct
     U64 black_rooks;
     U64 black_queens;
     U64 black_king;
-    
+
     U64 white_occ;
     U64 black_occ;
     U64 all_occ;
-    
+
     int side_to_move;
+    int ep_square;       /* -1 = none; else the square a pawn may capture to */
+    int castling_rights; /* bitfield: CASTLE_WK | CASTLE_WQ | CASTLE_BK | CASTLE_BQ */
 
 } Board;
 

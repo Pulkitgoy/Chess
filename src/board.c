@@ -23,7 +23,6 @@ void update_occupancies(Board *board)
     board->all_occ =
           board->white_occ
         | board->black_occ;
-
 }
 
 void init_start_position(Board *board)
@@ -42,46 +41,55 @@ void init_start_position(Board *board)
     board->black_queens  = 0x0800000000000000ULL;
     board->black_king    = 0x1000000000000000ULL;
 
-    board->side_to_move = WHITE;
+    board->side_to_move    = WHITE;
+    board->ep_square       = -1;
+    board->castling_rights = CASTLE_WK | CASTLE_WQ | CASTLE_BK | CASTLE_BQ;
 
     update_occupancies(board);
 }
 
-
 void print_board(Board *board)
 {
-    for(int rank = 7; rank >= 0; rank--)
+    printf("\n");
+    for (int rank = 7; rank >= 0; rank--)
     {
-        printf("%d  ", rank + 1);
-
-        for(int file = 0; file < 8; file++)
+        printf(" %d  ", rank + 1);
+        for (int file = 0; file < 8; file++)
         {
             int sq = rank * 8 + file;
-
             char piece = '.';
 
-            if(get_bit(board->white_pawns, sq)) piece = 'P';
-            else if(get_bit(board->white_knights, sq)) piece = 'N';
-            else if(get_bit(board->white_bishops, sq)) piece = 'B';
-            else if(get_bit(board->white_rooks, sq)) piece = 'R';
-            else if(get_bit(board->white_queens, sq)) piece = 'Q';
-            else if(get_bit(board->white_king, sq)) piece = 'K';
-
-            else if(get_bit(board->black_pawns, sq)) piece = 'p';
-            else if(get_bit(board->black_knights, sq)) piece = 'n';
-            else if(get_bit(board->black_bishops, sq)) piece = 'b';
-            else if(get_bit(board->black_rooks, sq)) piece = 'r';
-            else if(get_bit(board->black_queens, sq)) piece = 'q';
-            else if(get_bit(board->black_king, sq)) piece = 'k';
+            if      (get_bit(board->white_pawns,   sq)) piece = 'P';
+            else if (get_bit(board->white_knights, sq)) piece = 'N';
+            else if (get_bit(board->white_bishops, sq)) piece = 'B';
+            else if (get_bit(board->white_rooks,   sq)) piece = 'R';
+            else if (get_bit(board->white_queens,  sq)) piece = 'Q';
+            else if (get_bit(board->white_king,    sq)) piece = 'K';
+            else if (get_bit(board->black_pawns,   sq)) piece = 'p';
+            else if (get_bit(board->black_knights, sq)) piece = 'n';
+            else if (get_bit(board->black_bishops, sq)) piece = 'b';
+            else if (get_bit(board->black_rooks,   sq)) piece = 'r';
+            else if (get_bit(board->black_queens,  sq)) piece = 'q';
+            else if (get_bit(board->black_king,    sq)) piece = 'k';
 
             printf("%c ", piece);
         }
-
         printf("\n");
     }
 
-    printf("\n   a b c d e f g h\n\n");
-
-    printf("Side to move: %s\n",
+    printf("\n     a b c d e f g h\n\n");
+    printf(" Side     : %s\n",
            board->side_to_move == WHITE ? "White" : "Black");
+
+    if (board->ep_square != -1)
+        printf(" En pass  : %c%d\n",
+               'a' + (board->ep_square % 8),
+               (board->ep_square / 8) + 1);
+
+    printf(" Castling : %s%s%s%s\n",
+           (board->castling_rights & CASTLE_WK) ? "K" : "-",
+           (board->castling_rights & CASTLE_WQ) ? "Q" : "-",
+           (board->castling_rights & CASTLE_BK) ? "k" : "-",
+           (board->castling_rights & CASTLE_BQ) ? "q" : "-");
+    printf("\n");
 }

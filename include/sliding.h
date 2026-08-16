@@ -9,5 +9,14 @@ void generate_bishop_moves(
     MoveList *list,
     int side
 );
-
+void generate_rook_moves(
+    Board *board,
+    MoveList *list,
+    int side
+);
+void  generate_queen_moves(
+    Board *board,
+    MoveList *list,
+    int side
+);
 #endif

@@ -9,7 +9,7 @@ void print_move(Move move)
     char files[] = "abcdefgh";
 
     printf(
-        "%c%d%c%d\n",
+        "%c%d%c%d",
         files[source % 8],
         source / 8 + 1,
         files[target % 8],
